@@ -27,12 +27,6 @@ springdoc:
   swagger-ui:
     path: /docs
 
-http:
-  ms-clients:
-    base-url: http://ms-clients:8000
-    connection-timeout: 500
-    read-timeout: 2000
-
 logging:
   config: classpath:logback-prod.xml
 
