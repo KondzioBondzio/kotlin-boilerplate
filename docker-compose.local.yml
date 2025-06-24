@@ -1,0 +1,70 @@
+name: kotlin-boilerplate
+
+services:
+
+  kotlin-boilerplate-mongo:
+    image: mongo:6.0
+    container_name: kotlin-boilerplate-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: kotlin-boilerplate
+    expose:
+      - 27017
+    ports:
+      - "27017:27017"
+    volumes:
+      - kotlin-boilerplate-mongo-data:/data/db
+    networks:
+      - internal-network
+
+  kotlin-boilerplate-mongo-express:
+    image: mongo-express:latest
+    container_name: kotlin-boilerplate-mongo-express
+
+    environment:
+      ME_CONFIG_MONGODB_SERVER: kotlin-boilerplate-mongo
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH_USERNAME: root
+      ME_CONFIG_BASICAUTH_PASSWORD: root
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_URL: mongodb://root:root@kotlin-boilerplate-mongo:27017/kotlin-boilerplate?authSource=admin
+    ports:
+      - "8081:8081"
+    depends_on:
+      - kotlin-boilerplate-mongo
+    networks:
+      - internal-network
+
+
+  kotlin-boilerplate:
+    container_name: kotlin-boilerplate
+    env_file: ./.env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - 8000
+    ports:
+      - "8000:8000"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - kotlin-boilerplate-mongo
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    networks:
+      internal-network:
+        ipv4_address: 172.20.0.220
+
+
+volumes:
+  kotlin-boilerplate-mongo-data:
+
+networks:
+  internal-network:
+    external: true

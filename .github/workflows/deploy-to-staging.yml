@@ -1,0 +1,28 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - main
+env:
+  APP_DIR: /home/api/api-containers/kotlin-boilerplate
+
+jobs:
+  deploy:
+    name: Deploy to Staging
+    runs-on: [ self-hosted, api-staging ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Rsync files to server
+        run: |
+          rsync -avz --delete ./ ${{ env.APP_DIR }}
+          #rsync -avz --delete --exclude='.env' ./ ${{ env.APP_DIR }}
+
+
+      - name: Build and deploy Docker container
+        run: |
+          cd ${{ env.APP_DIR }} && docker compose -f docker-compose.prod.yml up --build -d
+

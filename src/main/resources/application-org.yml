@@ -1,0 +1,23 @@
+spring.application.name:
+  kotlin-boilerplate
+
+spring:
+  rabbitmq:
+    listener:
+      acknowledge-mode: manual
+    host: rabbitmq
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
+    port: 5672
+
+springdoc:
+  api-docs:
+    path: /openapi.json
+  swagger-ui:
+    path: /docs
+
+# graceful shutdoen - server.shoutdowne
+
+http:
+  external-service:
+    base-url: http://external-service:8082

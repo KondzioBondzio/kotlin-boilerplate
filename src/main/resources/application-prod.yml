@@ -1,0 +1,22 @@
+
+spring:
+  data:
+    mongodb:
+      host: kotlin-boilerplate-mongo
+      port: 27017
+      database: payouts
+      username: root
+      password: root
+      authentication-database: admin
+
+  rabbitmq:
+    listener:
+      acknowledge-mode: auto
+    host: rabbitmq
+    username: guest
+    password: guest
+    port: 5672
+    dynamic: true
+
+logging:
+  config: classpath:logback-prod.xml

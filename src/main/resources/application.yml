@@ -1,0 +1,38 @@
+spring.application.name:
+  kotlin-boilerplate
+
+server:
+  port: 8000
+
+logstash:
+  host: ${LOGSTASH_HOST:logstash}
+  port: ${LOGSTASH_PORT:5000}
+
+spring:
+  rabbitmq:
+    listener:
+      acknowledge-mode: auto
+    host: rabbitmq
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
+    port: 5672
+
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+springdoc:
+  api-docs:
+    path: /openapi.json
+  swagger-ui:
+    path: /docs
+
+http:
+  ms-clients:
+    base-url: http://ms-clients:8000
+    connection-timeout: 500
+    read-timeout: 2000
+
+logging:
+  config: classpath:logback-prod.xml
+
